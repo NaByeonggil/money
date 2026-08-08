@@ -112,6 +112,18 @@ li{margin-bottom:5px}
 .f.slot:hover,.f.slot:focus{background:#fdf1d4}
 .locked .f{pointer-events:none}
 
+/* ---- 도식 · 산식 ---- */
+pre.code{
+  margin:16px 0 22px;padding:14px 16px;
+  background:#f6f8fa;border:1px solid var(--line);border-radius:3px;
+  overflow-x:auto;
+}
+pre.code .f{
+  font-family:ui-monospace,SFMono-Regular,'SF Mono',Menlo,Consolas,monospace;
+  font-size:12.5px;line-height:1.7;color:var(--ink);white-space:pre;
+}
+pre.code .f:hover,pre.code .f:focus{background:#fff}
+
 /* ---- tip / warn ---- */
 .tip{
   border-left:3px solid #c9a34a;background:#fffdf7;

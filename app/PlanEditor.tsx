@@ -10,6 +10,7 @@ const TYPE_LABEL: Record<EntryType, string> = {
   text: "문단",
   list: "목록",
   table: "표",
+  code: "도식·산식",
   tip: "작성요령",
   warn: "주의",
   checklist: "체크리스트",
@@ -40,7 +41,8 @@ function Auto({
     el.style.height = "auto";
     el.style.height = `${el.scrollHeight}px`;
   }, [value]);
-  const isSlot = value.includes("「");
+  // 【 】 로 감싼 값 = 아직 채우지 않은 자리. 「 」는 법령·보고서 제목에 쓰이므로 제외한다.
+  const isSlot = value.includes("【");
   return (
     <textarea
       ref={ref}
@@ -309,7 +311,7 @@ export default function PlanEditor({ initial }: { initial: Plan }) {
           <h2>읽는 법</h2>
           <ul>
             <li>
-              노란색으로 표시된 칸은 아직 채워야 할 자리입니다. <b>「 」</b> 안의 안내 문구를 지우고
+              노란색으로 표시된 칸은 아직 채워야 할 자리입니다. <b>【 】</b> 안의 안내 문구를 지우고
               직접 쓰면 색이 사라집니다.
             </li>
             <li>모든 칸은 바로 고칠 수 있고, 타이핑을 멈추면 자동 저장됩니다.</li>
@@ -477,6 +479,19 @@ function EntryView({
               ariaLabel="문단"
             />
           </p>
+        );
+
+      case "code":
+        return (
+          <pre className="code">
+            <Auto
+              value={entry.text ?? ""}
+              readOnly={ro}
+              onChange={(v) => onPatch({ text: v })}
+              placeholder="도식이나 산식을 줄바꿈 그대로 입력하세요"
+              ariaLabel="도식·산식"
+            />
+          </pre>
         );
 
       case "tip":

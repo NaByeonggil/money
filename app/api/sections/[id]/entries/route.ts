@@ -6,7 +6,16 @@ export const dynamic = "force-dynamic";
 
 type Ctx = { params: Promise<{ id: string }> };
 
-const TYPES: EntryType[] = ["heading", "text", "list", "table", "tip", "warn", "checklist"];
+const TYPES: EntryType[] = [
+  "heading",
+  "text",
+  "list",
+  "table",
+  "code",
+  "tip",
+  "warn",
+  "checklist",
+];
 
 /** 섹션 안에 항목 추가. index를 주면 그 자리에 끼워 넣는다. */
 export async function POST(req: Request, { params }: Ctx) {

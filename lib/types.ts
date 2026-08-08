@@ -3,6 +3,7 @@ export type EntryType =
   | "text" // 문단
   | "list" // 불릿 목록
   | "table" // 표
+  | "code" // 도식·산식 (고정폭, 줄바꿈 보존)
   | "tip" // 작성 요령 (노란 박스)
   | "warn" // 주의 (붉은 박스)
   | "checklist"; // 체크리스트
@@ -64,6 +65,8 @@ export function blankEntry(type: EntryType): Entry {
       return { ...base, text: "새 소제목", level: 4 };
     case "text":
       return { ...base, text: "" };
+    case "code":
+      return { ...base, text: "단계 1\n  ↓\n단계 2" };
     case "tip":
       return { ...base, text: "작성 요령을 적어두세요." };
     case "warn":
