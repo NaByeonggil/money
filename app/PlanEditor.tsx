@@ -11,6 +11,7 @@ const TYPE_LABEL: Record<EntryType, string> = {
   list: "목록",
   table: "표",
   code: "도식·산식",
+  mockup: "화면 목업",
   tip: "작성요령",
   warn: "주의",
   checklist: "체크리스트",
@@ -55,6 +56,18 @@ function Auto({
       onChange={(e) => onChange(e.target.value)}
     />
   );
+}
+
+/* ------------------------------------------------------------------ */
+/* 목업 마크업 정리 — 스크립트와 이벤트 핸들러는 렌더링하지 않는다.       */
+/* 내가 붙여넣은 HTML이라도 문서 안에서 코드가 실행될 이유는 없다.        */
+/* ------------------------------------------------------------------ */
+function sanitize(html: string): string {
+  return html
+    .replace(/<\s*(script|iframe|object|embed|link|meta)\b[\s\S]*?<\s*\/\s*\1\s*>/gi, "")
+    .replace(/<\s*(script|iframe|object|embed|link|meta)\b[^>]*\/?>/gi, "")
+    .replace(/\son\w+\s*=\s*("[^"]*"|'[^']*'|[^\s>]+)/gi, "")
+    .replace(/(href|src)\s*=\s*("|')?\s*javascript:[^"'>]*("|')?/gi, "");
 }
 
 /* ------------------------------------------------------------------ */
@@ -492,6 +505,33 @@ function EntryView({
               ariaLabel="도식·산식"
             />
           </pre>
+        );
+
+      case "mockup":
+        return (
+          <figure className="mockup-fig">
+            <div className="mockup" dangerouslySetInnerHTML={{ __html: sanitize(entry.text ?? "") }} />
+            <figcaption>
+              <Auto
+                value={entry.caption ?? ""}
+                readOnly={ro}
+                onChange={(v) => onPatch({ caption: v })}
+                placeholder="화면 설명"
+                ariaLabel="목업 설명"
+              />
+            </figcaption>
+            {edit && (
+              <details className="no-print mockup-src">
+                <summary>HTML 편집</summary>
+                <Auto
+                  value={entry.text ?? ""}
+                  onChange={(v) => onPatch({ text: v })}
+                  placeholder="목업 HTML"
+                  ariaLabel="목업 HTML"
+                />
+              </details>
+            )}
+          </figure>
         );
 
       case "tip":

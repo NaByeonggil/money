@@ -1,5 +1,6 @@
 import type { Entry, Plan, Section } from "./types";
 import { newId } from "./types";
+import { MOCKUP_ONBOARDING, MOCKUP_RETENTION } from "./mockups";
 
 /**
  * 초기 데이터 — 맞춤형건기식앱_사업계획서_초안_1.md 를 옮긴 것.
@@ -11,6 +12,12 @@ import { newId } from "./types";
 const h = (text: string, level: 3 | 4 = 3): Entry => ({ id: newId(), type: "heading", text, level });
 const p = (text: string): Entry => ({ id: newId(), type: "text", text });
 const code = (text: string): Entry => ({ id: newId(), type: "code", text });
+const mockup = (text: string, caption: string): Entry => ({
+  id: newId(),
+  type: "mockup",
+  text,
+  caption,
+});
 const tip = (text: string): Entry => ({ id: newId(), type: "tip", text });
 const warn = (text: string): Entry => ({ id: newId(), type: "warn", text });
 const list = (...texts: string[]): Entry => ({
@@ -63,8 +70,24 @@ function sections(): Section[] {
         tip(
           "핵심 구조 — AI가 속도와 개인화를 담당하고, 약사가 안전성과 신뢰를 담당한다. AI 단독 추천은 복약 상호작용·과잉 섭취 위험에서 책임 소재가 불분명하고, 약사 단독 상담은 시간·접근성 제약으로 확장되지 않는다. 'AI 정리 → 약사 검증'의 2단 구조가 두 한계를 동시에 해소한다.",
         ),
+
+        h("서비스 화면 목업", 4),
+        p(
+          "이미 개발·운영 중인 PWA를 40~60대 기준으로 재설계한 화면이다. 아이디어 수준이 아니라 화면 단위까지 구체화된 상태임을 보여준다.",
+        ),
+        mockup(
+          MOCKUP_ONBOARDING,
+          "① 복약 정보 설문 → ② 약사 검증을 거친 추천 결과 → ③ 수령 방법 선택 (약국 상담 · 바로 주문 · 정기배송)",
+        ),
+        mockup(
+          MOCKUP_RETENTION,
+          "④ 재구매 시점의 복용 점검 → ⑤ 추천 근거와 제외 성분 공개 → ⑥ 제휴 약국 예약과 상담 자료 전달",
+        ),
+        tip(
+          "목업이 증명하는 것 — 화면 ①은 '복용약 상호작용 미고려' 문제에, 화면 ②·⑤는 '정보 과잉과 신뢰 부재' 및 '중복·과잉 섭취' 문제에 각각 대응한다. 화면 ④는 정체 시장의 핵심 지표인 2~3개월 재구매율을, 화면 ③·⑥은 약국 연계 구조를 화면으로 보여준다. 즉 문제 정의 → 화면 → KPI가 한 줄로 이어진다.",
+        ),
         warn(
-          "이미지 필수. 서비스 목업 또는 구조도 1~2컷을 요약란에 넣으세요. 텍스트만 있는 요약은 감점 요인입니다.",
+          "최종 HWP 제출본에는 이 화면을 이미지로 캡처해 삽입하세요. 상단 '인쇄 · PDF'로 출력한 뒤 해당 부분을 잘라 쓰면 됩니다. 요약란에 목업 없이 텍스트만 있으면 감점 요인입니다.",
         ),
       ],
     },

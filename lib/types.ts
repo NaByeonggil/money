@@ -4,6 +4,7 @@ export type EntryType =
   | "list" // 불릿 목록
   | "table" // 표
   | "code" // 도식·산식 (고정폭, 줄바꿈 보존)
+  | "mockup" // 화면 목업 (HTML 마크업을 그대로 렌더링)
   | "tip" // 작성 요령 (노란 박스)
   | "warn" // 주의 (붉은 박스)
   | "checklist"; // 체크리스트
@@ -22,8 +23,10 @@ export interface TableRow {
 export interface Entry {
   id: string;
   type: EntryType;
-  /** heading: 제목 텍스트 / text·tip·warn: 본문 */
+  /** heading: 제목 텍스트 / text·tip·warn: 본문 / mockup: HTML 마크업 */
   text?: string;
+  /** mockup: 그림 아래 설명 */
+  caption?: string;
   /** heading 레벨 (3 = 대소제목, 4 = 소소제목) */
   level?: 3 | 4;
   /** list · checklist */
@@ -67,6 +70,12 @@ export function blankEntry(type: EntryType): Entry {
       return { ...base, text: "" };
     case "code":
       return { ...base, text: "단계 1\n  ↓\n단계 2" };
+    case "mockup":
+      return {
+        ...base,
+        text: '<div style="padding:24px; text-align:center; color:#8f9aa5;">여기에 화면 목업 HTML을 붙여넣으세요</div>',
+        caption: "화면 설명",
+      };
     case "tip":
       return { ...base, text: "작성 요령을 적어두세요." };
     case "warn":

@@ -19,6 +19,7 @@ export async function PATCH(req: Request, { params }: Ctx) {
     }
     const { entry } = hit;
     if (typeof body.text === "string") entry.text = body.text;
+    if (typeof body.caption === "string") entry.caption = body.caption;
     if (body.level === 3 || body.level === 4) entry.level = body.level;
     if (typeof body.headerColumn === "boolean") entry.headerColumn = body.headerColumn;
     if (Array.isArray(body.items)) entry.items = body.items;

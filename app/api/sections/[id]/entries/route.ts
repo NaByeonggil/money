@@ -12,6 +12,7 @@ const TYPES: EntryType[] = [
   "list",
   "table",
   "code",
+  "mockup",
   "tip",
   "warn",
   "checklist",
