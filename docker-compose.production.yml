@@ -1,0 +1,31 @@
+# 프로덕션 실행(money.obesity.ai.kr): docker compose -f docker-compose.production.yml up -d
+name: money
+
+services:
+  # 서비스명을 app 으로 두면 obesity Caddy 의 app:3000 과 DNS 가 충돌하므로 money-app 사용
+  money-app:
+    image: node:24
+    restart: unless-stopped
+    user: "1000:1000"
+    working_dir: /app
+    environment:
+      HOME: /tmp
+      NEXT_TELEMETRY_DISABLED: "1"
+    ports:
+      # 외부 트래픽은 Caddy(80/443)로만 유입, 3002는 호스트 로컬 점검용
+      - "127.0.0.1:3002:3000"
+    volumes:
+      # 작성 데이터(.data/plan.json)도 이 마운트로 호스트에 그대로 남는다
+      - .:/app
+    # 소스 수정 후에는 재시작해야 반영됨:
+    #   docker compose -f docker-compose.production.yml restart money-app
+    # (NODE_ENV=production 을 environment 에 넣으면 npm ci 가 devDependencies 를 빼서 빌드가 깨짐)
+    command: sh -c "npm ci && npm run build && npm run start"
+    networks:
+      # obesity Caddy(80/443)가 money.obesity.ai.kr -> money-app:3000 으로 프록시
+      - proxy
+
+networks:
+  proxy:
+    name: obesity_obesity1_network
+    external: true
