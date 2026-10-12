@@ -1,6 +1,7 @@
 # 예비창업패키지 사업계획서 에디터
 
-브라우저에서 사업계획서를 **기록(추가) · 수정 · 삭제**할 수 있게 만든 로컬 Next.js 앱입니다.
+브라우저에서 사업계획서를 **기록(추가) · 수정 · 삭제**할 수 있게 만든 Next.js 앱입니다.
+운영 주소는 **https://money.obesity.ai.kr** 입니다(Basic 인증 필요).
 
 - 화면 구조·디자인: `예비창업패키지_사업계획서_초안.html`
 - 초기 내용: `예비창업패키지_사업계획서_복용안심.md`
@@ -17,6 +18,22 @@ npm run dev      # http://localhost:3000
 ```bash
 npm run build && npm start
 ```
+
+## 배포 (money.obesity.ai.kr)
+
+이 서버의 Docker에서 실행되고, obesity 프로젝트의 Caddy(80/443)가 HTTPS 인증서 발급과 프록시를 맡습니다.
+
+```bash
+docker compose -f docker-compose.production.yml up -d                  # 최초 실행
+docker compose -f docker-compose.production.yml restart money-app      # 소스 수정 후 반영
+docker compose -f docker-compose.production.yml logs -f money-app      # 로그
+```
+
+- 컨테이너는 시작할 때마다 `npm ci && npm run build && npm run start` 를 실행합니다.
+- 호스트에서는 `http://127.0.0.1:3002` 로 인증 없이 점검할 수 있습니다.
+- 프록시·인증 설정은 `~/바탕화면/obesity/Caddyfile` 의 `money.obesity.ai.kr` 블록에 있습니다.
+- 비밀번호를 바꾸려면 `docker exec obesity1_caddy_production caddy hash-password` 로 만든 해시를
+  `~/바탕화면/obesity/.env.caddy` 의 `MONEY_AUTH_HASH` 에 넣고(작은따옴표로 감싸기) Caddy 컨테이너를 다시 만듭니다.
 
 ## 저장 위치
 
@@ -62,4 +79,5 @@ lib/
   db.ts               .data/plan.json 읽기·쓰기 (쓰기 직렬화)
 ```
 
-> 로컬 전용입니다. 인증이 없으므로 외부에 그대로 노출하지 마세요.
+> 앱 자체에는 인증이 없습니다. 외부 접근은 Caddy의 Basic 인증으로만 막고 있으므로,
+> Caddy를 거치지 않는 경로(포트 직접 개방 등)로 노출하지 마세요.
