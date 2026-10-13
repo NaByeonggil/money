@@ -25,6 +25,32 @@ services:
       # obesity Caddy(80/443)가 money.obesity.ai.kr -> money-app:3000 으로 프록시
       - proxy
 
+  # SSD 웨어율(SMART) 수집 — 앱 컨테이너는 권한 없이 두고, 여기서만 장치를 읽어 .data/ssd-smart.json 에 남긴다
+  ssd-monitor:
+    image: alpine:3
+    restart: unless-stopped
+    devices:
+      # 디스크가 바뀌면 이 경로와 아래 smartctl 대상도 함께 바꿀 것 (lsblk -d 로 확인)
+      - /dev/nvme0
+    cap_add:
+      # NVMe SMART 로그 조회(admin 명령)에 필요
+      - SYS_ADMIN
+    volumes:
+      - ./.data:/data
+    command:
+      - sh
+      - -c
+      - |
+        apk add --no-cache smartmontools >/dev/null
+        while true; do
+          # 읽는 도중의 파일을 앱이 보지 않도록 임시 파일에 쓰고 교체
+          if smartctl -j -a /dev/nvme0 > /data/ssd-smart.json.tmp; then
+            chown 1000:1000 /data/ssd-smart.json.tmp
+            mv /data/ssd-smart.json.tmp /data/ssd-smart.json
+          fi
+          sleep 300
+        done
+
 networks:
   proxy:
     name: obesity_obesity1_network

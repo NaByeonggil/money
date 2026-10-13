@@ -1,5 +1,7 @@
 "use client";
 
+import Link from "next/link";
+import PlanTabs from "./plan/PlanTabs";
 import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import type { Entry, EntryType, Plan, Section } from "@/lib/types";
 
@@ -224,6 +226,9 @@ export default function PlanEditor({ initial }: { initial: Plan }) {
     <div className={ro ? "locked" : ""}>
       <div className="topbar no-print">
         <div className="topbar-in">
+          <Link className="btn" href="/">
+            메뉴
+          </Link>
           <span className="status">
             {error ? (
               <b style={{ color: "var(--alert)" }}>⚠ {error}</b>
@@ -245,6 +250,7 @@ export default function PlanEditor({ initial }: { initial: Plan }) {
               </>
             )}
           </span>
+          <PlanTabs current="filled" />
           <button className={`btn ${edit ? "on" : ""}`} onClick={() => setEdit((v) => !v)}>
             {edit ? "편집 중" : "읽기 전용"}
           </button>

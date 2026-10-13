@@ -249,6 +249,44 @@ footer{
   font-size:12.5px;color:var(--ink-soft);
 }
 
+/* ---- ssd status ---- */
+a.btn{text-decoration:none;display:inline-block;line-height:normal}
+.btn:disabled{opacity:.6;cursor:default}
+.ssd-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:28px}
+.ssd-card{border:1px solid var(--line);background:#fff;padding:16px 18px}
+.ssd-label{font-size:12px;font-weight:700;letter-spacing:.04em;color:var(--slate)}
+.ssd-value{font-size:26px;font-weight:800;letter-spacing:-.02em;line-height:1.4;font-variant-numeric:tabular-nums}
+.ssd-value small{font-size:13px;font-weight:600;color:var(--ink-soft);letter-spacing:0}
+.ssd-note{font-size:12.5px;color:var(--ink-soft);margin:6px 0 0}
+.meter{height:6px;background:var(--slate-tint);border-radius:3px;overflow:hidden;margin-top:6px}
+.meter-fill{height:100%;background:var(--slate)}
+.meter-fill.warn{background:var(--amber)}
+.meter-fill.alert{background:var(--alert)}
+.ssd-table{margin:0 0 20px;min-width:0}
+.ssd-table th{width:34%}
+.ssd-bad{color:var(--alert);font-weight:700}
+
+/* ---- menu ---- */
+.menu{display:grid;gap:12px}
+.menu-item{
+  display:block;border:1px solid var(--line);border-left:3px solid var(--slate);
+  background:#fff;padding:18px 22px;text-decoration:none;color:inherit;
+}
+.menu-item:hover{border-color:var(--slate)}
+.menu-title{display:block;font-size:18px;font-weight:800;letter-spacing:-.01em;color:var(--slate)}
+.menu-desc{display:block;font-size:13.5px;color:var(--ink-soft)}
+
+/* ---- 기본 양식 (읽기 전용) ---- */
+.form-guide,.form-guide-inline,td.form-cell{color:#1a56b0}
+.form-guide{font-size:13.5px;margin:12px 0}
+.form-guide-inline{font-weight:700}
+td.form-cell{white-space:pre-line}
+pre.form-blank{
+  margin:12px 0 22px;padding:12px 16px;min-height:120px;
+  border:1px dashed var(--line);background:#fff;color:var(--ink-soft);
+  font:inherit;line-height:2;
+}
+
 /* ---- print ---- */
 @media print{
   .topbar,.entry-ops,.adder,.rowops,.chip .x,.no-print{display:none !important}
@@ -268,6 +306,7 @@ footer{
   .wrap{padding:0 16px 80px}
   .topbar-in{padding:10px 16px}
   .sec-en{display:none}
+  .ssd-grid{grid-template-columns:1fr}
   /* 좁은 화면에서는 목업 3단 → 1단 */
   .mockup > div{grid-template-columns:1fr !important}
 }
